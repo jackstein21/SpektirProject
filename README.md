@@ -2,6 +2,8 @@
 A compilation of my work from my internship with Nuromedia during summer 2023. I was assigned to create an object detection model to create and learn from simulated gas leak data.
 
 ## Blender
+This part and other rendering is adoped from Max Wild, a previous intern for Nuromedia - https://github.com/max-wild/Thermal-Gas-Rendering
+
 The blender folder containes the DocekrFile and nessicary setup and python files to create render images of what a gas leak would look like on a thermal imaging camera. The following variables needs to be adjusted in the file render_gas.py:
 - total_renders = This is where you set the number of renders to be made. It should be in multiples of 4
 - out_dir = This is the output directiory. I suggest it stays as "renders" 
