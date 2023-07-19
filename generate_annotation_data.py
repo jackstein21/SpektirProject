@@ -245,11 +245,11 @@ def pipeline(backgrounds, smokes, coordinate_df, i, output_frames, output_masks,
     background = cv.cvtColor(background, cv.COLOR_GRAY2BGR)
     if annotation_type == 2:
         smoke, emitter_coordinate = sample_smoke2(smokes, coordinate_df)
+        emitter_coordinate = resize_coordinates(emitter_coordinate, smoke, W, H)
     else:
         smoke = sample_smoke(smokes)
     H, W = background.shape[:2]
     size, x, y, beta = get_random_parameters(H, W)
-    emitter_coordinate = resize_coordinates(emitter_coordinate, smoke, W, H)
     smoke = cv.resize(smoke, (W, H))
     frame = generate_frame(background, smoke, size, x, y, beta)
 
