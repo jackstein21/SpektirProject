@@ -1,0 +1,57 @@
+# Prompt to build the image
+docker build -t o1 .
+
+# Prompt to run the docker image
+docker run -it --rm --volume=/Users/jackstein/Documents/Nuromedia/DockerTest/object_detection/:/tensorflow/models/research/object_detection/workspace o1 bash
+
+# Prompt to run the script.sh
+bash script.sh
+
+
+
+
+step 1, copied workspace into object_detection
+/tensorflow/models/research/object_detection mkdir workspace
+/tensorflow/models/research/object_detection/workspace# cp -r /workspace .
+
+step 2:
+# From within /tensorflow/models/research/
+cp object_detection/packages/tf2/setup.py .
+python -m pip install .
+# why does this step uninstall 2.9.3?
+
+step 3
+cd into workspace/workspace and:
+python generate_tfrecord.py -x {PATH}/train -l {PATH}/label_map.pbtxt -o {PATH}/annotations/train.record
+python generate_tfrecord.py -x /tensorflow/models/research/object_detection/workspace/workspace/images/train -l /tensorflow/models/research/object_detection/workspace/workspace/annotations/label_map.pbtxt -o /tensorflow/models/research/object_detection/workspace/workspace/annotations/train.record
+python generate_tfrecord.py -x /tensorflow/models/research/object_detection/workspace/workspace/images/test -l /tensorflow/models/research/object_detection/workspace/workspace/annotations/label_map.pbtxt -o /tensorflow/models/research/object_detection/workspace/workspace/annotations/test.record
+
+step 4
+modify pipline config 
+
+step 5
+cd /tensorflow/models/research/object_detection
+pip uninstall opencv-python -y 
+apt-get install python3-opencv -y
+python model_main_tf2.py --model_dir=${MODEL_DIR} --pipeline_config_path=${PIPELINE_CONFIG_PATH}
+python model_main_tf2.py --model_dir /tensorflow/models/research/object_detection/workspace/workspace/models --pipeline_config_path /tensorflow/models/research/object_detection/workspace/workspace/models/pipeline.config
+
+
+step 6
+export
+python exporter_main_v2.py --input_type image_tensor --pipeline_config_path {PIPELINE_CONFIG_PATH} --trained_checkpoint_dir {MODEL_DIR} --output_directory {OUTPUT_DIR}/exported_model
+
+
+
+
+
+cp -r /workspace .
+cd /tensorflow/models/research
+cp object_detection/packages/tf2/setup.py .
+python -m pip install .
+cd /tensorflow/models/research/object_detection/workspace/workspace
+python generate_tfrecord.py -x /tensorflow/models/research/object_detection/workspace/workspace/images/train -l /tensorflow/models/research/object_detection/workspace/workspace/annotations/label_map.pbtxt -o /tensorflow/models/research/object_detection/workspace/workspace/annotations/train.record
+python generate_tfrecord.py -x /tensorflow/models/research/object_detection/workspace/workspace/images/test -l /tensorflow/models/research/object_detection/workspace/workspace/annotations/label_map.pbtxt -o /tensorflow/models/research/object_detection/workspace/workspace/annotations/test.record
+
+
+
