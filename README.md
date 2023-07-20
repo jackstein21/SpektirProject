@@ -12,6 +12,6 @@ The blender folder containes the DocekrFile and nessicary setup and python files
 This file will also output a .csv with the emmision coordinates for each rendered image that can be used for annotating the .xml files to come.
 
 ## Creating the xml annotation
-Using the Annotating_Gas_Leaks.ipynb file it is very easy to create xml annotated images to be used to train the object detection model. This file was created and tested using Colab. The folder 'backgrounds' contains thermal images to be used as backgrounds to be superimposed with the gas leaks created above. By downloading the backgrounds and following the steps in the .ipynb file, gas leaks can be rendered and annotated all in the same place. There are a few variables that need to be adjused as noted in the .ipynb file too.
+Using the Annotating_Gas_Leaks.ipynb file it is very easy to create xml annotated images to be used to train the object detection model. This file was created and tested using Colab. The file is designed to download all necessary files from this GitHub reposity. Varibles within it can be changed to modify the number of gas leak renders to be made and the number of final images (with annotations) to be made. It stores all created images locally in Colab which can be downloaded and used for model training later on.
 
 If one chooses to make the renders using the dockerfile in the above section, the renders need to be uploaded and the path to the renders just needs to be changed.
