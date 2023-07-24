@@ -21,3 +21,5 @@ Within the object_detection folder is all the required documents to train a Tens
 To set up the computer Docker should be installed and the terminal must be set to the object_detection directory. From there the image can be created. 
 After running the image using an example command found in notes.txt, the user can link their local folder to one within the container.
 Using the prompt to run the shell script the machien will move all necessary files into the correct location and follow the TensorFlow object detection api instructions to train a custom model and export it. 
+
+The folder currently contains a small dataset of cars that were used for testing. By running the above xml annotation script, the files can easily be moved to replace the train and test data in this folder. Other important files that need to be updated are the annotations/lable_map.pbtxt, and the models/pipeline.config to reflect the goal of the object detetion. 
