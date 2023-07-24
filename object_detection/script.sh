@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Copy /workspace directory to the current directory
-# cp -r /workspace .
+cp -r /workspace .
 
 # Change directory to /tensorflow/models/research
 cd /tensorflow/models/research
