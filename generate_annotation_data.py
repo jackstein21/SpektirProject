@@ -111,12 +111,14 @@ def generate_mask(background, smoke, size, H, W, x, y, beta, threshold=50):
 def draw_square(img,bbox):
   start_point = bbox[0],bbox[2]
   end_point = bbox[1],bbox[3]
+  img = np.copy(img)
   image = cv.rectangle(img, start_point, end_point,(255,0,0))
   return image
 
 def draw_square2(img,center):
   start_point = [x-40 for x in center]
   end_point = [x+40 for x in center]
+  img = np.copy(img)
   image = cv.rectangle(img, start_point, end_point,(255,0,0))
   return image
 
@@ -197,6 +199,16 @@ def generate_annotation2(image_frame, image_path, emitter_coordinate):
   # return image
   return annotated_image
 
+def generate_annotation3(image_frame, image_path, image_mask, emitter_coordinate):
+  image_path1 = image_path[:-4]+'_1'+image_path[-4:]
+  image_path2 = image_path[:-4]+'_2'+image_path[-4:]
+  annotated_image1 = generate_annotation(image_frame, image_path1, image_mask)
+  annotated_image2 = generate_annotation2(image_frame, image_path2, emitter_coordinate)
+
+  # return image
+  return annotated_image1, annotated_image2
+
+
 def make_dirs(output_dir):
     output_frames = os.path.join(output_dir, 'frames')
     try:
@@ -215,6 +227,7 @@ def make_dirs(output_dir):
         pass
     
     return output_frames, output_masks, output_annotated
+
 
 def get_evaluation_data(
     output_frames, output_masks, output_frames_eval, output_masks_eval, output_annotated_eval):
@@ -244,7 +257,7 @@ def pipeline(backgrounds, smokes, coordinate_df, i, output_frames, output_masks,
     background = cv.cvtColor(background, cv.COLOR_BGR2GRAY)
     background = cv.cvtColor(background, cv.COLOR_GRAY2BGR)
     H, W = background.shape[:2]
-    if annotation_type == 2:
+    if annotation_type != 1:
         smoke, emitter_coordinate = sample_smoke2(smokes, coordinate_df)
         emitter_coordinate = resize_coordinates(emitter_coordinate, smoke, W, H)
     else:
@@ -279,10 +292,18 @@ def pipeline(backgrounds, smokes, coordinate_df, i, output_frames, output_masks,
         annotated_img = generate_annotation2(frame, path_frame, emitter_coordinate)
         path_annotation = os.path.join(output_annotated, 'annotated_{0:0>{zeros}}.jpg'.format(i, zeros=max(zero_trail, 3)))
         cv.imwrite(path_annotation, annotated_img) # Save annotated image
+    elif annotation_type == 3:
+        emitter_coordinate = (emitter_coordinate[0]-x,emitter_coordinate[1]-y)
+        annotated_img1 , annotated_img2 = generate_annotation3(frame, path_frame,mask, emitter_coordinate)
+        path_annotation1 = os.path.join(output_annotated, 'annotated1_{0:0>{zeros}}.jpg'.format(i, zeros=max(zero_trail, 3)))
+        path_annotation2 = os.path.join(output_annotated, 'annotated2_{0:0>{zeros}}.jpg'.format(i, zeros=max(zero_trail, 3)))
+        cv.imwrite(path_annotation1, annotated_img1)
+        cv.imwrite(path_annotation2, annotated_img2) # Save annotated image
     else:
         print("Invalid annotation type")
     
     
+
 
 
 if __name__ == '__main__':
@@ -300,7 +321,7 @@ if __name__ == '__main__':
     ap.add_argument("-c", "--coordinates", required=False,
         help="path to the coordinates file")
     ap.add_argument("-a", "--annotationtype", required=True,
-        help="1) annotations from mask, 2) annotation from coordinates")
+        help="1) annotations from mask, 2) annotation from coordinates, 3) both annotation types")
     args = vars(ap.parse_args())  # By default, it takes arguments from sys.argv
 
     # Gathers all the data
