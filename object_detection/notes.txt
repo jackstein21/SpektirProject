@@ -34,12 +34,13 @@ cd /tensorflow/models/research/object_detection
 pip uninstall opencv-python -y 
 apt-get install python3-opencv -y
 python model_main_tf2.py --model_dir=${MODEL_DIR} --pipeline_config_path=${PIPELINE_CONFIG_PATH}
-python model_main_tf2.py --model_dir /tensorflow/models/research/object_detection/workspace/workspace/models --pipeline_config_path /tensorflow/models/research/object_detection/workspace/workspace/models/pipeline.config
+python model_main_tf2.py --model_dir /tensorflow/models/research/object_detection/workspace/workspace/mymodel --pipeline_config_path /tensorflow/models/research/object_detection/workspace/workspace/mymodel/pipeline.config
 
 
 step 6
 export
 python exporter_main_v2.py --input_type image_tensor --pipeline_config_path {PIPELINE_CONFIG_PATH} --trained_checkpoint_dir {MODEL_DIR} --output_directory {OUTPUT_DIR}/exported_model
+python exporter_main_v2.py --input_type image_tensor --pipeline_config_path /tensorflow/models/research/object_detection/workspace/mymodel/pipeline.config --trained_checkpoint_dir /tensorflow/models/research/object_detection/workspace/mymodel --output_directory /tensorflow/models/research/object_detection/workspace/mymodel
 
 
 
@@ -52,6 +53,10 @@ python -m pip install .
 cd /tensorflow/models/research/object_detection/workspace/workspace
 python generate_tfrecord.py -x /tensorflow/models/research/object_detection/workspace/workspace/images/train -l /tensorflow/models/research/object_detection/workspace/workspace/annotations/label_map.pbtxt -o /tensorflow/models/research/object_detection/workspace/workspace/annotations/train.record
 python generate_tfrecord.py -x /tensorflow/models/research/object_detection/workspace/workspace/images/test -l /tensorflow/models/research/object_detection/workspace/workspace/annotations/label_map.pbtxt -o /tensorflow/models/research/object_detection/workspace/workspace/annotations/test.record
+
+
+
+
 
 
 
