@@ -19,3 +19,8 @@ If one chooses to make the renders using the docker file in the above section, t
 ## Object Detection
 Within the object_detection folder are all the required documents to train a TensorFlow object detection model. To set up the computer Docker should be installed and the terminal must be set to the object_detection directory. From there the image can be created. After running the image using an example command found in notes.txt, the user can link their local folder to one within the container. Using the prompt to run the shell script the machine will move all necessary files into the correct location and follow the TensorFlow object detection API instructions to train a custom model and export it.
 The folder currently contains a small dataset of cars that were used for testing. By running the above XML annotation script, the files can easily be moved to replace the train and test data in this folder. Other important files that need to be updated are the annotations/lable_map.pbtxt, and the models/pipeline.config to reflect the goal of the object detection.
+
+The final part of the detection where the model gets exported still faces some errors, though.
+
+
+This entire project was an increbile learning exerience and this reposity is a collection of all the work I had put into it over the summer internship. I am thankful for this opportunity to learn and and help out my company.
