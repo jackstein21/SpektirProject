@@ -1,4 +1,4 @@
-#!/bin/bash
+# !/bin/bash
 
 # Copy /workspace directory to the current directory
 cp -r /workspace .
@@ -31,7 +31,7 @@ pip uninstall opencv-python -y
 apt-get install python3-opencv -y
 
 # Train model
-python model_main_tf2.py --model_dir /tensorflow/models/research/object_detection/workspace/models --pipeline_config_path /tensorflow/models/research/object_detection/workspace/models/pipeline.config
+python model_main_tf2.py --model_dir /tensorflow/models/research/object_detection/workspace/mymodel --pipeline_config_path /tensorflow/models/research/object_detection/workspace/mymodel/pipeline.config
 
 # Export the model
-python exporter_main_v2.py --input_type image_tensor --pipeline_config_path /tensorflow/models/research/object_detection/workspace/models/pipeline.config --trained_checkpoint_dir /tensorflow/models/research/object_detection/workspace/models/pre-trained-models/ssd_mobilenet_v2_fpnlite_640x640_coco17_tpu-8 --output_directory /tensorflow/models/research/object_detection/workspace/exported_model
+python exporter_main_v2.py --input_type image_tensor --pipeline_config_path /tensorflow/models/research/object_detection/workspace/mymodel/pipeline.config --trained_checkpoint_dir /tensorflow/models/research/object_detection/workspace/mymodel --output_directory /tensorflow/models/research/object_detection/workspace/mymodel
