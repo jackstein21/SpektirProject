@@ -52,21 +52,12 @@ def get_random_parameters(H, W):
     beta = random.uniform(0.95, 1)
     return size, x, y, beta
 
-def resize_coordinates(emitter_coordinate, smoke, W, H):
-  original_shape = smoke.shape
-  
-  scale_x = W / original_shape[0]
-  scale_y = H / original_shape[1]
-  
-  original_x = emitter_coordinate[0]
-  original_y = emitter_coordinate[1]
+def resize_coordinates(emitter_coordinate,smoke, W, H):
+    scale_x = W / smoke.shape[1]
+    scale_y = H / smoke.shape[0]
 
-  transformed_x = int(original_x * scale_x)
-  transformed_y = int(original_y * scale_y)
-
-  emitter_coordinate = (transformed_x, transformed_y)
-
-  return emitter_coordinate 
+    emitter_coordinate = (round(emitter_coordinate[0] * scale_x), round(emitter_coordinate[1] * scale_y))
+    return emitter_coordinate
 
 def normalize(array, radious=50):
     array_mean = int(np.mean(array))
@@ -288,12 +279,12 @@ def pipeline(backgrounds, smokes, coordinate_df, i, output_frames, output_masks,
         path_annotation = os.path.join(output_annotated, 'annotated_{0:0>{zeros}}.jpg'.format(i, zeros=max(zero_trail, 3)))
         cv.imwrite(path_annotation, annotated_img) # Save annotated image
     elif annotation_type == 2:
-        emitter_coordinate = (emitter_coordinate[0]-x,emitter_coordinate[1]-y)
+        # emitter_coordinate = (emitter_coordinate[0]-x,emitter_coordinate[1]-y)
         annotated_img = generate_annotation2(frame, path_frame, emitter_coordinate)
         path_annotation = os.path.join(output_annotated, 'annotated_{0:0>{zeros}}.jpg'.format(i, zeros=max(zero_trail, 3)))
         cv.imwrite(path_annotation, annotated_img) # Save annotated image
     elif annotation_type == 3:
-        emitter_coordinate = (emitter_coordinate[0]-x,emitter_coordinate[1]-y)
+        # emitter_coordinate = (emitter_coordinate[0]-x,emitter_coordinate[1]-y)
         annotated_img1 , annotated_img2 = generate_annotation3(frame, path_frame,mask, emitter_coordinate)
         path_annotation1 = os.path.join(output_annotated, 'annotated1_{0:0>{zeros}}.jpg'.format(i, zeros=max(zero_trail, 3)))
         path_annotation2 = os.path.join(output_annotated, 'annotated2_{0:0>{zeros}}.jpg'.format(i, zeros=max(zero_trail, 3)))
